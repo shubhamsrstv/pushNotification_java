@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream.PutField;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.AndroidConfig;
+import com.google.firebase.messaging.AndroidNotification;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -30,13 +32,21 @@ public class App
         System.out.println("Firebase app initialized.");
         //.setCredentials(GoogleCredentials.getApplicationDefault())
         	    
-        String registrationToken = "AAAA89hUTvQ:APA91bHIGeyh5GcLddj9io7sXnTLsoyEtLHgd5h3aoBS14CGAft5Sh4Nz0627ajM_j7ArVZKRTEkGEeZlIOeVKU797qSlUYrL4wgNoYl7BOpLsFex2UdSrfyssszldXFQRue0DA5weu1";
+        //String registrationToken = "AAAA89hUTvQ:APA91bHIGeyh5GcLddj9io7sXnTLsoyEtLHgd5h3aoBS14CGAft5Sh4Nz0627ajM_j7ArVZKRTEkGEeZlIOeVKU797qSlUYrL4wgNoYl7BOpLsFex2UdSrfyssszldXFQRue0DA5weu1";
         String topic = "global";
 
-     Message message = Message.builder()
-    		 .putData("message","Happy")
-    		 .setTopic(topic)
-         .build();
+        Message message = Message.builder()
+        	    .setAndroidConfig(AndroidConfig.builder()
+        	        .setTtl(120000)
+        	        .setPriority(AndroidConfig.Priority.NORMAL)
+        	        .setNotification(AndroidNotification.builder()
+        	            .setTitle("Noti")
+        	            .setBody("Message1")
+        	            .setColor("#009900")
+        	            .build())
+        	        .build())
+        	    .setTopic(topic)
+        	    .build();
   
      System.out.println("Message is set.");
      String response = FirebaseMessaging.getInstance().send(message);
